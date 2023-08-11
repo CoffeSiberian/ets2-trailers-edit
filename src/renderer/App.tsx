@@ -1,9 +1,13 @@
-import './App.css';
+import { PrimeReactProvider } from 'primereact/api';
 
-export const App = () => {
+import RoutesPage from 'renderer/routes/Router';
+
+const App = () => {
   return (
-    <div className="flex justify-center">
-      <h1>Hello, Electron!</h1>
-    </div>
+    <PrimeReactProvider>
+      <RoutesPage />
+    </PrimeReactProvider>
   );
 };
+
+export default App;
