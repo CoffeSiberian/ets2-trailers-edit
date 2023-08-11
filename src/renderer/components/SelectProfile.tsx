@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import defaultUser from '../static/img/defaultUser.svg';
 import { Image } from 'primereact/image';
-import { Card } from 'primereact/card';
+import { useDarkMode } from '../hooks/DarkModeContex';
+import { Typography } from '@mui/material';
 
 interface userPorfile {
   profileName: string | null;
@@ -10,6 +11,8 @@ interface userPorfile {
 }
 
 const SelectProfile = () => {
+  const { themeTatailwind } = useDarkMode();
+
   const [Profile, setProfile] = useState<userPorfile>({
     profileName: null,
     saveName: null,
@@ -23,22 +26,41 @@ const SelectProfile = () => {
           <Image
             src={Profile.profileImage ? Profile.profileImage : defaultUser}
             alt={Profile.profileName ? Profile.profileName : 'Not found'}
-            width="100"
+            width="70"
           />
         </div>
         <div className="p-3">
-          <h1>{Profile.profileName ? Profile.profileName : 'Not found'}</h1>
-          <h3>{Profile.saveName ? Profile.saveName : 'Not found'}</h3>
+          <Typography
+            className="flex justify-center"
+            color={themeTatailwind.primary.color}
+          >
+            {Profile.profileName ? Profile.profileName : 'Not found'}
+          </Typography>
+          <Typography
+            className="flex justify-center"
+            color={themeTatailwind.primary.color}
+          >
+            {Profile.saveName ? Profile.saveName : 'Not found'}
+          </Typography>
         </div>
       </div>
     );
   };
 
   return (
-    <div>
-      <Card className="flex p-3 justify-center" title="Select your profile">
+    <div className="flex flex-col-reverse w-full items-center">
+      <div
+        className={`flex flex-col ${themeTatailwind.secondary.main} max-w-lg w-full items-center rounded-lg border-2 border-transparent ${themeTatailwind.primary.border_color} shadow-2xl gap-3 m-4 p-4`}
+      >
+        <Typography
+          variant="h5"
+          className="flex justify-center"
+          color={themeTatailwind.primary.color}
+        >
+          Select Profile
+        </Typography>
         {Profile ? renderProfile() : <></>}
-      </Card>
+      </div>
     </div>
   );
 };

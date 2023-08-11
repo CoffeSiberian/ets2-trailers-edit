@@ -5,9 +5,19 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 // icons
 import 'primeicons/primeicons.css';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+
 import App from './App';
+import { DarkMode } from './hooks/DarkModeContex';
 import { createRoot } from 'react-dom/client';
 
 const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);
-root.render(<App />);
+root.render(
+  <DarkMode>
+    <App />
+  </DarkMode>
+);
