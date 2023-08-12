@@ -1,5 +1,5 @@
 import SelectProfile from 'renderer/components/SelectProfile';
-import RenderOptions from 'renderer/components/RenderOptions';
+import RenderOptions from 'renderer/routes/pages/RenderOptions';
 
 const Home = () => {
   return (
