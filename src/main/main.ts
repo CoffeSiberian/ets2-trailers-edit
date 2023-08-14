@@ -143,7 +143,7 @@ app
     });
     ipcMain.handle('readProfileNames', async () => {
       const docsDir = app.getPath('documents');
-      const profileNames = readProfileNames(docsDir);
+      const profileNames = await readProfileNames(docsDir);
       return profileNames;
     });
   })

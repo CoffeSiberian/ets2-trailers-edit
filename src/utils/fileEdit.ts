@@ -5,6 +5,17 @@ import { Profile } from 'renderer/types/SaveGameTypes';
 
 const SII_PATH = join('SII_Decrypt.exe');
 
+const getProfileImage = async (path: string): Promise<Buffer | null> => {
+  try {
+    const pathImg = join(path, 'avatar.png');
+
+    const imgBuffer = await fs.promises.readFile(pathImg);
+    return imgBuffer;
+  } catch (err) {
+    return null;
+  }
+};
+
 export const arrFile = (dir: string, fileName: string) => {
   const file = fs.readFileSync(join(dir, fileName), 'utf8');
   return file.split('\r\n');
@@ -30,27 +41,34 @@ export const descriptFiles = (dirFileStr: string, fileName: string) => {
   }
 };
 
-export const readProfileNames = (dirDocs: string): Array<Profile> => {
+export const readProfileNames = async (
+  dirDocs: string
+): Promise<Array<Profile>> => {
   try {
     const dirProfiles = join(dirDocs, 'Euro Truck Simulator 2', 'profiles');
     const profiles = fs.readdirSync(dirProfiles);
 
-    const profileNames = profiles.map((profile) => {
+    const profileNames = profiles.map(async (profile) => {
       try {
         const profilesSaves = fs.readdirSync(
           join(dirProfiles, profile, 'save')
         );
+        const profileImgBuffer = await getProfileImage(
+          join(dirProfiles, profile)
+        );
+        const profileImgBase64 = profileImgBuffer?.toString('base64');
         return {
           name: Buffer.from(profile, 'hex').toString('utf-8'),
           hex: profile,
           saves: profilesSaves,
+          avatar: profileImgBase64,
         };
       } catch (err) {
         return null;
       }
     });
 
-    const filterNull = profileNames.filter(
+    const filterNull = (await Promise.all(profileNames)).filter(
       (profile) => profile !== null
     ) as Array<Profile>;
 

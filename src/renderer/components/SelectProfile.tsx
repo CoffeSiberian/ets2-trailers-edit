@@ -4,44 +4,36 @@ import { Image } from 'primereact/image';
 import { useDarkMode } from '../hooks/DarkModeContex';
 import ListProfiles from './ListProfiles';
 import { Typography } from '@mui/material';
+import { Profile } from 'renderer/types/SaveGameTypes';
 
-interface userPorfile {
-  profileName: string | null;
-  saveName: string | null;
-  profileImage: string | null;
+interface renderProfile {
+  profile: Profile;
 }
 
 const SelectProfile = () => {
   const { themeTatailwind } = useDarkMode();
 
-  const [Profile, setProfile] = useState<userPorfile>({
-    profileName: null,
-    saveName: null,
-    profileImage: null,
-  });
+  const [Profile, setProfile] = useState<renderProfile | null>(null);
 
-  const renderProfile = () => {
+  const renderProfile = (userProfile: renderProfile) => {
     return (
       <div className="flex flex-row p-3">
         <div className="p-3">
           <Image
-            src={Profile.profileImage ? Profile.profileImage : defaultUser}
-            alt={Profile.profileName ? Profile.profileName : 'Not found'}
+            src={
+              userProfile.profile.avatar
+                ? `data:image/png;base64, ${userProfile.profile.avatar}`
+                : defaultUser
+            }
+            alt={
+              userProfile.profile.name ? userProfile.profile.name : 'Not found'
+            }
             width="70"
           />
         </div>
-        <div className="p-3">
-          <Typography
-            className="flex justify-center"
-            color={themeTatailwind.primary.color}
-          >
-            {Profile.profileName ? Profile.profileName : 'Not found'}
-          </Typography>
-          <Typography
-            className="flex justify-center"
-            color={themeTatailwind.primary.color}
-          >
-            {Profile.saveName ? Profile.saveName : 'Not found'}
+        <div className="flex p-3 items-center align-items-center">
+          <Typography color={themeTatailwind.primary.color} variant="h5">
+            {userProfile.profile.name ? userProfile.profile.name : 'Not found'}
           </Typography>
         </div>
       </div>
@@ -60,8 +52,8 @@ const SelectProfile = () => {
         >
           Select Profile
         </Typography>
-        {Profile ? renderProfile() : <></>}
-        <ListProfiles />
+        {Profile ? renderProfile(Profile) : <></>}
+        <ListProfiles setProfile={setProfile} />
       </div>
     </div>
   );
