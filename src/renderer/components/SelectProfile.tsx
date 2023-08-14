@@ -2,6 +2,7 @@ import { useState } from 'react';
 import defaultUser from '../static/img/defaultUser.svg';
 import { Image } from 'primereact/image';
 import { useDarkMode } from '../hooks/DarkModeContex';
+import ListProfiles from './ListProfiles';
 import { Typography } from '@mui/material';
 
 interface userPorfile {
@@ -60,6 +61,7 @@ const SelectProfile = () => {
           Select Profile
         </Typography>
         {Profile ? renderProfile() : <></>}
+        <ListProfiles />
       </div>
     </div>
   );

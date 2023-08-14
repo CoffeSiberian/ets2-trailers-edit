@@ -14,6 +14,7 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import { readProfileNames } from './../utils/fileEdit';
 
 class AppUpdater {
   constructor() {
@@ -138,8 +139,12 @@ app
 
     ipcMain.handle('pathDocsDir', async () => {
       const docsDir = app.getPath('documents');
-      console.log(`pathDocsDir: ${docsDir}`);
       return docsDir;
+    });
+    ipcMain.handle('readProfileNames', async () => {
+      const docsDir = app.getPath('documents');
+      const profileNames = readProfileNames(docsDir);
+      return profileNames;
     });
   })
   .catch(console.log);
